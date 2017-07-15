@@ -15,10 +15,15 @@ void moveRightWheel(int speed) {
 }
 
 void sharpLeftTurn() {
-  int turnSpeed = knob(6)/4;
-  int turnTime = knob(7);
+  int turnSpeed, turnTime;
 
-  while(!startbutton());
+  while(!startbutton()) {
+    turnSpeed = knob(6)/4;
+    turnTime = knob(7);
+    LCD.clear(); LCD.home() ;
+    LCD.setCursor(0, 0); LCD.print("speed: "); LCD.print(turnSpeed);
+    LCD.setCursor(0, 1); LCD.print("time: "); LCD.print(turnTime);
+  }
   
   for(int i = 0; i < turnTime; i++) {
     moveLeftWheel(-turnSpeed);
@@ -35,10 +40,15 @@ void sharpLeftTurn() {
 }
 
 void sharpRightTurn() {
-  int turnSpeed = knob(6)/4;
-  int turnTime = knob(7);
+  int turnSpeed, turnTime;
 
-  while(!startbutton());
+  while(!startbutton()) {
+    turnSpeed = knob(6)/4;
+    turnTime = knob(7);
+    LCD.clear(); LCD.home() ;
+    LCD.setCursor(0, 0); LCD.print("speed: "); LCD.print(turnSpeed);
+    LCD.setCursor(0, 1); LCD.print("time: "); LCD.print(turnTime);
+  }
   
   for(int i = 0; i < turnTime; i++) {
     moveLeftWheel(turnSpeed);
