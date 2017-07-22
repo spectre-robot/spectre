@@ -1,8 +1,8 @@
 void grabAgent() {
-  RCServo0.write(180);
-  RCServo1.write(180);
-  RCServo0.write(0);
-  RCServo1.write(0);
+  while (true) {
+    RCServo0.write(knob(6)/8); //Shoulder Servo
+    RCServo1.write(knob(7)/8); //Hand Servo
+  }
 }
 
 void nextAgent() {
@@ -52,6 +52,11 @@ void rescue() {
     sharpRightTurn();
     grabAgent();
     sharpLeftTurn();
+    agents_rescued++;
+  }
+
+  while(agents_rescued % 6 != 3) {
+    nextAgent();
     agents_rescued++;
   }
 }
