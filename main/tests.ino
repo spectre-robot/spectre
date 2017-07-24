@@ -12,8 +12,4 @@ void test() {
 
   LCD.clear(); LCD.home() ;
   LCD.setCursor(0, 0); LCD.print("QRD Test");
-  while(true) {
-    
-  }
-  
 }
