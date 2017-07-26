@@ -15,14 +15,14 @@ void moveRightWheel(int speed) {
 }
 
 void sharpLeftTurn() {
-  int turnSpeed, turnTime;//254, 254
+  /*
+  int turn_count;
+  //int start_rotations = left_rotations;
 
   while(true) {
-    turnSpeed = knob(6)/4;
-    turnTime = knob(7);
-    LCD.clear(); LCD.home() ;
-    LCD.setCursor(0, 0); LCD.print("speed: "); LCD.print(turnSpeed);
-    LCD.setCursor(0, 1); LCD.print("time: "); LCD.print(turnTime);
+    turn_count = knob(6);
+    //LCD.clear(); LCD.home() ;
+    //LCD.setCursor(0, 0); LCD.print("count: "); LCD.print(turnSpeed);
     delay(100);
     if(stopbutton()) {
       delay(100);
@@ -32,43 +32,26 @@ void sharpLeftTurn() {
       }
     }
   }
-    moveLeftWheel(-turnSpeed);
-    moveRightWheel(turnSpeed);
 
-  //stopMotors();
-  delay(turnTime);
+  while(left_rotations - start_rotations < turn_count) {
+    moveLeftWheel(-255);
+    moveRightWheel(255);
+  }
+
   stopMotors();
-/*
-  do {
-    moveLeftWheel(-turnSpeed);
-    moveRightWheel(turnSpeed);
-  } while(analogRead(0) > qrd_threshold && analogRead(1) > qrd_threshold);
+  
+  moveLeftWheel(-255);
+  moveRightWheel(255);
+
+  delay(255);
+  stopMotors();
   */
 }
 
 void sharpRightTurn() {
-  int turnSpeed, turnTime;//254, 254
-
-  while(true) {
-    turnSpeed = knob(6)/4;
-    turnTime = knob(7);
-    LCD.clear(); LCD.home() ;
-    LCD.setCursor(0, 0); LCD.print("speed: "); LCD.print(turnSpeed);
-    LCD.setCursor(0, 1); LCD.print("time: "); LCD.print(turnTime);
-    delay(100);
-    if(stopbutton()) {
-      delay(100);
-      if(stopbutton()) {
-        delay(100);
-        break;
-      }
-    }
-  }
-    moveLeftWheel(turnSpeed);
-    moveRightWheel(-turnSpeed);
-
-  //stopMotors();
-  delay(turnTime);
+  moveLeftWheel(255);
+  moveRightWheel(-255);
+  delay(255);
   stopMotors();
 }
 
@@ -83,11 +66,11 @@ int readRightSensor() {
 }
 
 int readFarLeftSensor() {
-  return analogRead(2);
+  return analogRead(4);
 }
 
 int readFarRightSensor() {
-  return analogRead(3);
+  return analogRead(5);
 }
 
 int read1kSensor() {

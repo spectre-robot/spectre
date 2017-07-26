@@ -1,4 +1,5 @@
 void test() {
+  /*
   LCD.clear(); LCD.home() ;
   LCD.setCursor(0, 0); LCD.print("Left Wheel");
   moveLeftWheel(100);
@@ -12,4 +13,5 @@ void test() {
 
   LCD.clear(); LCD.home() ;
   LCD.setCursor(0, 0); LCD.print("QRD Test");
+  */
 }
