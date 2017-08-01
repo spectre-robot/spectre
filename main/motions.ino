@@ -14,69 +14,63 @@ void moveRightWheel(int speed) {
   motor.speed(1, speed);
 }
 
-void sharpLeftTurn() {
-  /*
-  int turn_count;
-  //int start_rotations = left_rotations;
+void moveLift(int speed) {
+  motor.speed(2, speed);
+}
 
-  while(true) {
-    turn_count = knob(6);
-    //LCD.clear(); LCD.home() ;
-    //LCD.setCursor(0, 0); LCD.print("count: "); LCD.print(turnSpeed);
-    delay(100);
-    if(stopbutton()) {
-      delay(100);
-      if(stopbutton()) {
-        delay(100);
-        break;
-      }
-    }
-  }
-
-  while(left_rotations - start_rotations < turn_count) {
-    moveLeftWheel(-255);
-    moveRightWheel(255);
-  }
-
-  stopMotors();
+void stopLift() {
+  motor.speed(2, 0);
+}
+/*
+void driveStraight(unsigned long distance, int speed) {
+  left_rotations = 0;
+  right_rotations = 0;
   
-  moveLeftWheel(-255);
-  moveRightWheel(255);
-
-  delay(255);
-  stopMotors();
-  */
+  while(left_rotations + right_rotations < distance) {
+    int left_control = ;
+    int right_control = 0;
+    moveLeftWheel(speed + left_control);
+    moveRightWheel(speed + right_control);
+  }
 }
-
-void sharpRightTurn() {
-  moveLeftWheel(255);
-  moveRightWheel(-255);
-  delay(255);
-  stopMotors();
-}
-
+*/
 // ROBOT SENSORS
 
 int readLeftSensor() {
-  return analogRead(1);
+  return analogRead(4);
 }
 
 int readRightSensor() {
-  return analogRead(2);
+  return analogRead(3);
 }
 
 int readFarLeftSensor() {
-  return analogRead(4);
+  return analogRead(5);
 }
 
 int readFarRightSensor() {
-  return analogRead(5);
+  return analogRead(2);
 }
 
 int read1kSensor() {
-  return analogRead(4);
+  return analogRead(0);
 }
 
 int read10kSensor() {
-  return analogRead(5);
+  return analogRead(1);
 }
+
+bool stopSignal() {
+  return (read1kSensor() >= 2 && read10kSensor() >= 2  && 2 * read1kSensor() < read10kSensor());
+  //return (read10kSensor() > ir_threshold);
+  //return true;
+}
+
+bool isOnIntersection() {
+  return (readFarLeftSensor() > qrd_threshold || readFarRightSensor() > qrd_threshold);
+}
+
+bool foundHoldingTank() {
+  return readFarLeftSensor() > qrd_threshold;
+}
+

@@ -1,64 +1,64 @@
 unsigned long last_stop = 0;
 
 void grabAgent() {
-  /*while (true) {
-    RCServo0.write(knob(6)/8); //Shoulder Servo
-    RCServo1.write(knob(7)/8); //Hand Servo
-  }*/
-  delay(3000);
+
+  RCServo1.write(45); //Hand Servo (Initial Position)
+  RCServo0.write(125); //Shoulder Servo
+  delay(1000);
+  RCServo1.write(5); //Hand Servo
+  delay(1000);
+  RCServo0.write(0); //Shoulder Servo
+  delay(1000);
+  RCServo1.write(45); //Hand Servo
+  
+  //RCServo0.write(0);
+  //RCServo1.write(0);
 }
 
 void nextAgent() {
   int p = 0, d = 0;
-  int prev_error = 0, kp = 10, kd = 5;
+  int prev_error = 0, kp = 12, kd = 9;
   int gain = 1;
-  int far_left = 1000, far_right = 1000, left = 0, right = 0;
-  int tape_count;
   
-  do {
-    left = readLeftSensor();
-    right = readRightSensor();
+  while(!isOnIntersection() || millis() - last_stop < 500) {
+    //kp = knob(6)/4;
+    //kd = knob(7)/4;
+    //LCD.clear(); LCD.home() ;
+    //LCD.setCursor(0, 0); LCD.print("kp: "); LCD.print(kp);
+    //LCD.setCursor(0, 1); LCD.print("kd: "); LCD.print(kd);
+    
+    int left = readLeftSensor();
+    int right = readRightSensor();
     int error;
 
     if ((left > qrd_threshold) && (right > qrd_threshold)) error = 0;
     if ((left > qrd_threshold) && (right < qrd_threshold)) error = -1; // right is off the path. need to turn left. right wheel goes faster
-    if ((left < qrd_threshold) && (right > qrd_threshold)) error = 1; // left is off the path. need to turn right. left wheel goes faster
+    if ((left < qrd_threshold) && (right > qrd_threshold)) error = 2; // left is off the path. need to turn right. left wheel goes faster
     if ((left < qrd_threshold) && (right < qrd_threshold)) {
-      if (prev_error > 0) error = 2;
-      if (prev_error <= 0) error = -2;
+     // if (prev_error >= 0) error = 2;
+      //if (prev_error < 0) error = -2;
+      error = 5;
     }
 
     p = kp * error;
     d = kd * (error - prev_error);
-    int control = gain * (p + d);
-    
-    moveLeftWheel(base_rescue_speed + control);
-    moveRightWheel(base_rescue_speed - control);
-    
-    far_left = readFarLeftSensor();
-    far_right = readFarRightSensor();
-    left = readLeftSensor();
-    right = readRightSensor();
 
-    tape_count = 0;
-    if(far_left > qrd_threshold) tape_count++;
-    if(far_right > qrd_threshold) tape_count++;
-    if(left > qrd_threshold) tape_count++;
-    if(right > qrd_threshold) tape_count++;
-  } while (tape_count < 3 || millis() - last_stop < 500);
+    int control = gain * (p + d);
+    moveLeftWheel(base_tapefollow_speed + control);
+    moveRightWheel(base_tapefollow_speed - control);
+    prev_error = error;
+  }
 }
 
 void rescue() {
-  //sharpLeftTurn();
   int agents_rescued = 0;
-  
-  while(millis() - start_time < 60000 + 5000 * agents_rescued && agents_rescued < 6) {
+
+  // save agents until we've saved them all or the rest already drowned
+  while(/*millis() - start_time < 60000 + 5000 * agents_rescued && agents_rescued < 6*/true) {
     last_stop = millis();
     nextAgent();
     stopMotors();
-    //sharpRightTurn();
     grabAgent();
-    //sharpLeftTurn();
     agents_rescued++;
   }
 
@@ -67,3 +67,4 @@ void rescue() {
     agents_rescued++;
   }
 }
+
