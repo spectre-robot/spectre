@@ -6,8 +6,8 @@ void test() {
     LCD.clear(); LCD.home() ;
     LCD.setCursor(0, 0); LCD.print("Left Wheel: "); LCD.print(left_speed);
     LCD.setCursor(0, 1); LCD.print("Right Wheel: "); LCD.print(right_speed);
-    motor.speed(0, left_speed) ;
-    motor.speed(1, right_speed) ;
+    moveLeftWheel(left_speed) ;
+    moveRightWheel(right_speed) ;
   }
 
   // Lift Test

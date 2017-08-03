@@ -3,16 +3,16 @@
 #include <LiquidCrystal.h>
 
 // GLOBAL VARIABLES
+bool seen_gate = false; // sorry
 int direction = 1; // 1 for left surface, -1 for right. dont worry abt this for now.
 int qrd_threshold = 100;
 int ir_threshold = 75;
 int base_tapefollow_speed = 125; // fyi the motor takes in values from -255 to 255. so dont make this too high!
-int base_rescue_speed = 50;
+int base_rescue_speed = 100;
 unsigned long start_time = 0;
 
 // MAP
-unsigned long gate_min_location = 76200;
-unsigned long gate_max_location = 76500;
+unsigned long gate_min_location = 150000;
 unsigned long zipline_distance = 20000;
 unsigned long tank_distance = 0;
 
@@ -52,22 +52,20 @@ void setup() {
 
 void loop() {
   menu();
-  
+  /*
   left_rotations = 0;
   right_rotations = 0;
-  /*while(true) {
-    LCD.clear(); LCD.home() ;
-    LCD.setCursor(0, 0);  LCD.print(left_rotations - start_dist);
-    delay(1000);
-  }
-  */
-  //menu();
-  //start_time = millis();
+  seen_gate = false;
+  start_time = millis();
   //tapefollow();
+  //delay(1000);
   rescue();
+  //realign();
   //zipline();
-  //grabAgent();
-  //grabAgent();
+  stopMotors();
+  */
+  zipline();
+  stopMotors();
 }
 
 

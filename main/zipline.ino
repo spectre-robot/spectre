@@ -1,22 +1,5 @@
 void goToZipline() {
-  while(true) {
-    while(!(stopbutton())) {
-      int lol = knob(6);
-      zipline_distance = 1000*lol;
-      LCD.clear(); LCD.home() ;
-      LCD.setCursor(0, 0); LCD.print("dist: "); LCD.print(lol);
-    }
-    LCD.clear(); LCD.home() ;
-    LCD.setCursor(0, 0); LCD.print("covfefe");
-    left_rotations = 0;
-    right_rotations = 0;
-  
-    while(left_rotations + right_rotations < zipline_distance) {
-      moveLeftWheel(100);
-      moveRightWheel(100);
-    }
-    stopMotors();
-  }
+  driveStraight(100000 ,100);
 }
 
 void liftBasket() {
@@ -31,6 +14,7 @@ void lowerBasket() {
   stopLift();
 }
 
+// move back 46 in, turn 10 deg
 void zipline() {
   //liftBasket();
   goToZipline();

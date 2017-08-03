@@ -7,11 +7,11 @@ void stopMotors() {
 }
 
 void moveLeftWheel(int speed) {
-  motor.speed(0, speed);
+  motor.speed(1, speed);
 }
 
 void moveRightWheel(int speed) {
-  motor.speed(1, speed);
+  motor.speed(0, speed);
 }
 
 void moveLift(int speed) {
@@ -21,19 +21,83 @@ void moveLift(int speed) {
 void stopLift() {
   motor.speed(2, 0);
 }
-/*
+
+// Drive perfectly straight using encoders. 
 void driveStraight(unsigned long distance, int speed) {
   left_rotations = 0;
   right_rotations = 0;
-  
+  int prev_control = 0;
+
   while(left_rotations + right_rotations < distance) {
-    int left_control = ;
-    int right_control = 0;
-    moveLeftWheel(speed + left_control);
-    moveRightWheel(speed + right_control);
+    LCD.clear(); LCD.home() ;
+    LCD.setCursor(0, 0); LCD.print(left_rotations);
+    LCD.setCursor(0, 1); LCD.print(right_rotations);
+    int control = 0;
+    if (left_rotations > right_rotations + 20) {
+      control = 40;
+    } else if (left_rotations < right_rotations - 20) {
+      control = -40; 
+    }
+    if (control * prev_control > 0) {
+      control = control + prev_control;
+    }
+    moveLeftWheel(speed - control);
+    moveRightWheel(speed + control);
+    if (control > 0) {
+      prev_control = 45;
+    } else if (control < 0) {
+      prev_control = -45;
+    } else {
+      prev_control = 0;
+    }
   }
+
+  stopMotors();
 }
-*/
+
+// Same as above but backwards. Control values are different because the wheels are mounted in the back so its more sensitive.
+// 20% accuracy. Lets try not to use it...
+void driveBackwards(unsigned long distance, int speed) {
+  left_rotations = 0;
+  right_rotations = 0;
+  int prev_control = 0;
+
+  while(left_rotations + right_rotations < distance) {
+    int control = 0;
+    if (left_rotations > right_rotations + 20) {
+      control = 40;
+    } else if (left_rotations < right_rotations - 20) {
+      control = -40; 
+    }
+    if (control * prev_control > 0) {
+      control = control + prev_control;
+    }
+    moveLeftWheel(speed + control);
+    moveRightWheel(speed - control);
+    if (control > 0) {
+      prev_control = 40;
+    } else if (control < 0) {
+      prev_control = -40;
+    } else {
+      prev_control = 0;
+    }
+  }
+  
+  stopMotors();
+}
+
+int rotate(int angle) {
+  left_rotations = 0;
+  right_rotations = 0;
+
+  while (left_rotations + right_rotations < angle * 40) {
+    moveLeftWheel(100);
+    moveRightWheel(-100);
+  }
+  
+  stopMotors();
+}
+
 // ROBOT SENSORS
 
 int readLeftSensor() {
@@ -61,7 +125,7 @@ int read10kSensor() {
 }
 
 bool stopSignal() {
-  return (read1kSensor() >= 2 && read10kSensor() >= 2  && 2 * read1kSensor() < read10kSensor());
+  return (read1kSensor() >= 4 && read10kSensor() >= 4  && 2 * read1kSensor() < read10kSensor());
   //return (read10kSensor() > ir_threshold);
   //return true;
 }
@@ -71,6 +135,6 @@ bool isOnIntersection() {
 }
 
 bool foundHoldingTank() {
-  return readFarLeftSensor() > qrd_threshold;
+  return readFarLeftSensor() > qrd_threshold && ((left_rotations + right_rotations) > 3 * gate_min_location);
 }
 

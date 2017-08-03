@@ -26,7 +26,8 @@ void tapefollow() {
     if ((left < qrd_threshold) && (right > qrd_threshold)) error = 1; // left is off the path. need to turn right. left wheel goes faster
     if ((left < qrd_threshold) && (right < qrd_threshold)) {
       if (prev_error > 0) error = 5;
-      if (prev_error <= 0) error = -5;
+      if (prev_error < 0) error = -5;
+      if (prev_error = 0) error = 0;
     }
 
     p = kp * error;
@@ -38,14 +39,17 @@ void tapefollow() {
     prev_error = error;
 
     unsigned long distance = left_rotations + right_rotations;
+    LCD.setCursor(0, 1); LCD.print(distance);
     
-    if (distance > gate_min_location && distance < gate_max_location) {
+    if (!seen_gate && distance > gate_min_location) {
         stopMotors();
+        seen_gate = true;
         delay(1000);
         if (stopSignal()) {
           waitForGo();
         }
     }
+    
     
    
     if (foundHoldingTank()) {
