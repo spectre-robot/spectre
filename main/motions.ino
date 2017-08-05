@@ -1,3 +1,44 @@
+// ROBOT SENSORS
+
+int readFarLeftSensor() {
+  return analogRead(0);
+}
+
+int readLeftSensor() {
+  return analogRead(1);
+}
+
+int readRightSensor() {
+  return analogRead(2);
+}
+
+int readFarRightSensor() {
+  return analogRead(3);
+}
+
+int read1kSensor() {
+  return analogRead(4);
+}
+
+int read10kSensor() {
+  return analogRead(5);
+}
+
+bool stopSignal() {
+  return (read1kSensor() >= 4 && read10kSensor() >= 4  && 2 * read1kSensor() < read10kSensor());
+  //return (read10kSensor() > ir_threshold);
+  //return true;
+}
+
+bool isOnIntersection() {
+  return (readFarLeftSensor() > qrd_threshold || readFarRightSensor() > qrd_threshold);
+}
+
+bool foundHoldingTank() {
+  return readFarLeftSensor() > qrd_threshold && ((left_rotations + right_rotations) > 3 * gate_min_location);
+}
+
+
 // ROBOT MOVEMENTS
 // tinah pin table: https://docs.google.com/document/d/19ENoCmjqfHotwhIWKtm5PPhOPvGOI2TGFGEHJ5CG0m8/edit#heading=h.gjatae8iah5i
 
@@ -23,6 +64,7 @@ void stopLift() {
 }
 
 // Drive perfectly straight using encoders. 
+// 7.5% accuracy. 50000 = 20 inches
 void driveStraight(unsigned long distance, int speed) {
   left_rotations = 0;
   right_rotations = 0;
@@ -34,9 +76,9 @@ void driveStraight(unsigned long distance, int speed) {
     LCD.setCursor(0, 1); LCD.print(right_rotations);
     int control = 0;
     if (left_rotations > right_rotations + 20) {
-      control = 40;
+      control = 45;
     } else if (left_rotations < right_rotations - 20) {
-      control = -40; 
+      control = -45; 
     }
     if (control * prev_control > 0) {
       control = control + prev_control;
@@ -65,9 +107,9 @@ void driveBackwards(unsigned long distance, int speed) {
   while(left_rotations + right_rotations < distance) {
     int control = 0;
     if (left_rotations > right_rotations + 20) {
-      control = 40;
+      control = 45;
     } else if (left_rotations < right_rotations - 20) {
-      control = -40; 
+      control = -45; 
     }
     if (control * prev_control > 0) {
       control = control + prev_control;
@@ -75,9 +117,9 @@ void driveBackwards(unsigned long distance, int speed) {
     moveLeftWheel(speed + control);
     moveRightWheel(speed - control);
     if (control > 0) {
-      prev_control = 40;
+      prev_control = 45;
     } else if (control < 0) {
-      prev_control = -40;
+      prev_control = -45;
     } else {
       prev_control = 0;
     }
@@ -98,43 +140,23 @@ int rotate(int angle) {
   stopMotors();
 }
 
-// ROBOT SENSORS
+int realign() {
+  left_rotations = 0;
+  right_rotations = 0;
 
-int readLeftSensor() {
-  return analogRead(4);
+  if (readFarLeftSensor() < qrd_threshold && readFarRightSensor() < qrd_threshold) {
+    driveBackwards(1000, -100);
+    realign();
+  } else if (readFarLeftSensor() < qrd_threshold || readFarRightSensor() < qrd_threshold) {
+    while ((readFarLeftSensor() < qrd_threshold || readFarRightSensor() < qrd_threshold) && left_rotations + right_rotations < 3000) {
+      moveLeftWheel(100);
+      moveRightWheel(-100);
+    }
+    left_rotations = 0;
+    right_rotations = 0;
+    while ((readFarLeftSensor() < qrd_threshold || readFarRightSensor() < qrd_threshold) && left_rotations + right_rotations < 3000) {
+      moveLeftWheel(-100);
+      moveRightWheel(100);
+    }
+  }
 }
-
-int readRightSensor() {
-  return analogRead(3);
-}
-
-int readFarLeftSensor() {
-  return analogRead(5);
-}
-
-int readFarRightSensor() {
-  return analogRead(2);
-}
-
-int read1kSensor() {
-  return analogRead(0);
-}
-
-int read10kSensor() {
-  return analogRead(1);
-}
-
-bool stopSignal() {
-  return (read1kSensor() >= 4 && read10kSensor() >= 4  && 2 * read1kSensor() < read10kSensor());
-  //return (read10kSensor() > ir_threshold);
-  //return true;
-}
-
-bool isOnIntersection() {
-  return (readFarLeftSensor() > qrd_threshold || readFarRightSensor() > qrd_threshold);
-}
-
-bool foundHoldingTank() {
-  return readFarLeftSensor() > qrd_threshold && ((left_rotations + right_rotations) > 3 * gate_min_location);
-}
-

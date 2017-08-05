@@ -16,6 +16,8 @@ unsigned long gate_min_location = 150000;
 unsigned long zipline_distance = 20000;
 unsigned long tank_distance = 0;
 
+unsigned long last_stop = 0;
+
 volatile unsigned long left_rotations = 0;
 volatile unsigned long right_rotations = 0;
 
@@ -52,7 +54,6 @@ void setup() {
 
 void loop() {
   menu();
-  /*
   left_rotations = 0;
   right_rotations = 0;
   seen_gate = false;
@@ -60,11 +61,8 @@ void loop() {
   //tapefollow();
   //delay(1000);
   rescue();
-  //realign();
+  //grabAgent();
   //zipline();
-  stopMotors();
-  */
-  zipline();
   stopMotors();
 }
 
