@@ -39,9 +39,9 @@ void tapefollow() {
     prev_error = error;
 
     unsigned long distance = left_rotations + right_rotations;
-    LCD.setCursor(0, 1); LCD.print(distance);
+    //LCD.setCursor(0, 1); LCD.print(distance);
     
-    if (!seen_gate && distance > gate_min_location) {
+    if (!seen_gate && distance > gate_location[surface]) {
         stopMotors();
         seen_gate = true;
         delay(1000);
@@ -50,11 +50,7 @@ void tapefollow() {
         }
     }
     
-    
-   
     if (foundHoldingTank()) {
-      //moveLeftWheel(-50);
-      //moveRightWheel(50);
       stopMotors();
       break;
     }

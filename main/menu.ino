@@ -1,21 +1,14 @@
 void menu() {
   LCD.clear(); LCD.home() ;
-  LCD.setCursor(0, 0); LCD.print("start l stop r");
+  LCD.setCursor(0, 0); LCD.print("START for CW");
+  LCD.setCursor(1, 0); LCD.print("STOP for CCW");
   while(true) {
-    //gate_min_location = knob(6) * 1000;
-    //LCD.clear(); LCD.home();
-    //LCD.setCursor(0, 1);LCD.print(gate_min_location);
-    
-    //base_rescue_speed = knob(6)/4;
-    //LCD.clear(); LCD.home() ;
-    //LCD.setCursor(0, 0); LCD.print("start l stop r");
-   // LCD.setCursor(0, 1); LCD.print("speed: "); LCD.print(base_rescue_speed);
     if(startbutton()) {
-      direction = 1;
+      surface = 0;
       break;
     }
     if(stopbutton()) {
-      direction = -1;
+      surface = 1;
       break;
     }
   }

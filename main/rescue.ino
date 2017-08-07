@@ -82,19 +82,21 @@ void nextAgent() {
 }
 
 void rescue() {
-  /*driveStraight(6000, 100);
-  delay(100);
-  while(readLeftSensor() < qrd_threshold || readRightSensor() < qrd_threshold) {
-    moveLeftWheel(100);
-    moveRightWheel(-100);
+  if (surface == 1) {
+    driveStraight(6000, 100);
+    delay(100);
+    while(readLeftSensor() < qrd_threshold || readRightSensor() < qrd_threshold) {
+      moveLeftWheel(100);
+      moveRightWheel(-100);
+    }
+    stopMotors();
+    delay(100);
   }
-  stopMotors();
-  delay(100);*/
   
   int agents_rescued = 0;
 
   // save agents until we've saved them all or the rest already drowned
-  while(/*millis() - start_time < 60000 + 5000 * agents_rescued && agents_rescued < 6*/true) {
+  while(millis() - start_time < 60000 + 5000 * agents_rescued && agents_rescued < 6) {
     LCD.clear(); LCD.home() ;
     LCD.setCursor(0, 0); LCD.print("Move");
     last_stop = millis();
@@ -111,10 +113,13 @@ void rescue() {
     agents_rescued++;
   }
 
-  while(agents_rescued % 6 != 3) {
+  while(agents_rescued % 7 != 2) {
     last_stop = millis();
     nextAgent();
     agents_rescued++;
   }
+
+  leap();
+  stopMotors();
 }
 

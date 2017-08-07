@@ -26,8 +26,6 @@ int read10kSensor() {
 
 bool stopSignal() {
   return (read1kSensor() >= 4 && read10kSensor() >= 4  && 2 * read1kSensor() < read10kSensor());
-  //return (read10kSensor() > ir_threshold);
-  //return true;
 }
 
 bool isOnIntersection() {
@@ -35,7 +33,11 @@ bool isOnIntersection() {
 }
 
 bool foundHoldingTank() {
-  return readFarLeftSensor() > qrd_threshold && ((left_rotations + right_rotations) > 3 * gate_min_location);
+  if (surface == 0) {
+    return readFarRightSensor() > qrd_threshold && ((left_rotations + right_rotations) > 3 * gate_location[surface]);
+  } else {
+    return readFarLeftSensor() > qrd_threshold && ((left_rotations + right_rotations) > 3 * gate_location[surface]);
+  }
 }
 
 
