@@ -37,16 +37,16 @@ void loop()
   currentTime = millis();
   
   // Check if it's time to read (wait 100 ms)
-  if(currentTime >= (lastTime + 100))
+  if(currentTime >= (lastTime + 80))
   {
     // read the two pins
     encA = digitalRead(pinA);
     encB = digitalRead(pinB);
 
     // Printing out the encoder values A and B
-    Serial.print(encA);
-    Serial.print(",");
-    Serial.println(encB);
+    Serial.println(encA);
+    //Serial.print(",");
+    //Serial.println(encB);
     
     
     // check if A has gone from high to low
