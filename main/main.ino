@@ -52,7 +52,9 @@ void setup() {
 }
 
 void loop() {
+  RCServo0.write(0);
   RCServo1.write(60);
+  RCServo2.write(0);
   menu();
   left_rotations = 0;
   right_rotations = 0;
@@ -60,8 +62,8 @@ void loop() {
   start_time = millis();
   tapefollow();
   delay(1000);
+  RCServo2.write(180);
   rescue();
-  //grabAgent();
   zipline();
   stopMotors();
 }

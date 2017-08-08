@@ -10,13 +10,8 @@ void tapefollow() {
   int gain = 1;
 
   while (true) {
-    //kp = knob(6)/4;
-    //kd = knob(7)/4;
-    //LCD.clear(); LCD.home() ;
-    //LCD.setCursor(0, 0); LCD.print("kp: "); LCD.print(kp);
-    //LCD.setCursor(0, 1); LCD.print("kd: "); LCD.print(kd);
     LCD.clear(); LCD.home() ;
-    LCD.setCursor(0, 0); LCD.print(analogRead(0)); LCD.print(" "); LCD.print(analogRead(1));
+    LCD.setCursor(0, 0); LCD.print(read1kSensor()); LCD.print(" "); LCD.print(read10kSensor());
     int left = readLeftSensor();
     int right = readRightSensor();
     int error;
@@ -39,7 +34,6 @@ void tapefollow() {
     prev_error = error;
 
     unsigned long distance = left_rotations + right_rotations;
-    //LCD.setCursor(0, 1); LCD.print(distance);
     
     if (!seen_gate && distance > gate_location[surface]) {
         stopMotors();

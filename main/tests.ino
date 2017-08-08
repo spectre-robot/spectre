@@ -10,14 +10,6 @@ void test() {
     moveRightWheel(right_speed) ;
   }
 
-  // Lift Test
-  while(!(stopbutton())) {
-    int lift_speed = knob(6)/4;
-    LCD.clear(); LCD.home() ;
-    LCD.setCursor(0, 0); LCD.print("Lift Speed: "); LCD.print(lift_speed);
-    motor.speed(2, lift_speed) ;
-  }
-
   // Sensor Test
   while(!(stopbutton())) {
     LCD.clear(); LCD.home() ;

@@ -38,7 +38,7 @@ void leap() {
     prev_error = error;
   }
 
-  if (readLeftSensor() < qrd_threshold && readRightSensor() > qrd_threshold) {
+  if (readRightSensor() < qrd_threshold && readLeftSensor() > qrd_threshold) {
     unsigned long start_spin = millis();
     while (readLeftSensor() < qrd_threshold && readRightSensor() > qrd_threshold && (millis() - start_spin) < 600) {
       moveLeftWheel(75);
@@ -67,8 +67,8 @@ void nextAgent() {
     if ((left > qrd_threshold) && (right < qrd_threshold)) error = -1; // right is off the path. need to turn left. right wheel goes faster
     if ((left < qrd_threshold) && (right > qrd_threshold)) error = 1; // left is off the path. need to turn right. left wheel goes faster
     if ((left < qrd_threshold) && (right < qrd_threshold)) {
-      if (prev_error > 0) error = 2;
-      if (prev_error <= 0) error = -5;
+      if (prev_error > 0) error = 5;
+      if (prev_error <= 0) error = -2;
     }
 
     p = kp * error;
@@ -82,12 +82,12 @@ void nextAgent() {
 }
 
 void rescue() {
-  if (surface == 1) {
+  if (surface == 0) {
     driveStraight(6000, 100);
     delay(100);
     while(readLeftSensor() < qrd_threshold || readRightSensor() < qrd_threshold) {
-      moveLeftWheel(100);
-      moveRightWheel(-100);
+      moveRightWheel(100);
+      moveLeftWheel(-100);
     }
     stopMotors();
     delay(100);
