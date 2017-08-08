@@ -130,13 +130,14 @@ void driveBackwards(unsigned long distance, int speed) {
   stopMotors();
 }
 
-int rotate(int angle) {
+// 1 is clockwise, false is counter-clockwise
+int rotate(int angle, int dir) {
   left_rotations = 0;
   right_rotations = 0;
 
   while (left_rotations + right_rotations < angle * 40) {
-    moveLeftWheel(100);
-    moveRightWheel(-100);
+    moveLeftWheel(100 * dir);
+    moveRightWheel(-100 * dir);
   }
   
   stopMotors();
@@ -160,5 +161,16 @@ int realign() {
       moveLeftWheel(-100);
       moveRightWheel(100);
     }
+  }
+}
+
+bool wheelie() {
+  return readFarLeftSensor() > qrd_threshold  && readLeftSensor() > qrd_threshold && readRightSensor() > qrd_threshold && readFarRightSensor() > qrd_threshold;
+}
+
+void undoWheelie() {
+  while(wheelie()) {
+    moveLeftWheel(-50);
+    moveRightWheel(-50);
   }
 }

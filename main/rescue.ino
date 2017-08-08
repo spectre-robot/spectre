@@ -40,15 +40,15 @@ void leap() {
 
   if (readRightSensor() < qrd_threshold && readLeftSensor() > qrd_threshold) {
     unsigned long start_spin = millis();
-    while (readLeftSensor() < qrd_threshold && readRightSensor() > qrd_threshold && (millis() - start_spin) < 600) {
-      moveLeftWheel(75);
-      moveRightWheel(-75);
+    while (readRightSensor() < qrd_threshold && readLeftSensor() > qrd_threshold && (millis() - start_spin) < 600) {
+      moveRightWheel(75);
+      moveLeftWheel(-75);
     }
   } else {
     unsigned long start_spin = millis();
     while (readLeftSensor() < qrd_threshold || readRightSensor() < qrd_threshold && (millis() - start_spin) < 750) {
-      moveLeftWheel(-75);
-      moveRightWheel(75);
+      moveRightWheel(-75);
+      moveLeftWheel(75);
     }
   }
 }

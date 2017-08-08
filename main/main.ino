@@ -12,7 +12,7 @@ int base_rescue_speed = 100;
 unsigned long start_time = 0;
 
 // MAP
-unsigned long gate_location[2] = {150000, 150000};
+unsigned long gate_location[2] = {110000, 110000};
 unsigned long zipline_distance[2] = {20000, 20000};
 
 unsigned long last_stop = 0;
@@ -52,20 +52,23 @@ void setup() {
 }
 
 void loop() {
-  RCServo0.write(0);
+  RCServo0.write(0);  
   RCServo1.write(60);
   RCServo2.write(0);
   menu();
-  left_rotations = 0;
+  /*left_rotations = 0;
   right_rotations = 0;
   seen_gate = false;
   start_time = millis();
-  tapefollow();
+  //tapefollow();
   delay(1000);
   RCServo2.write(180);
   rescue();
   zipline();
+  stopMotors();*/
+  zipline();
   stopMotors();
+  
 }
 
 
