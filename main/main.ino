@@ -54,21 +54,18 @@ void setup() {
 void loop() {
   RCServo0.write(0);  
   RCServo1.write(60);
-  RCServo2.write(0);
+  RCServo2.write(180);
   menu();
-  /*left_rotations = 0;
+  left_rotations = 0;
   right_rotations = 0;
   seen_gate = false;
   start_time = millis();
   //tapefollow();
-  delay(1000);
-  RCServo2.write(180);
-  rescue();
-  zipline();
-  stopMotors();*/
-  zipline();
-  stopMotors();
-  
+  //delay(500);
+  //RCServo2.write(140);
+  //delay(500);
+  //rescue();
+  zipline();  
 }
 
 

@@ -51,6 +51,8 @@ void leap() {
       moveLeftWheel(75);
     }
   }
+
+  stopMotors();
 }
 
 void nextAgent() {
@@ -67,8 +69,8 @@ void nextAgent() {
     if ((left > qrd_threshold) && (right < qrd_threshold)) error = -1; // right is off the path. need to turn left. right wheel goes faster
     if ((left < qrd_threshold) && (right > qrd_threshold)) error = 1; // left is off the path. need to turn right. left wheel goes faster
     if ((left < qrd_threshold) && (right < qrd_threshold)) {
-      if (prev_error > 0) error = 5;
-      if (prev_error <= 0) error = -2;
+      if (prev_error >= 0) error = 5;
+      if (prev_error < 0) error = -2;
     }
 
     p = kp * error;
@@ -96,7 +98,7 @@ void rescue() {
   int agents_rescued = 0;
 
   // save agents until we've saved them all or the rest already drowned
-  while(millis() - start_time < 60000 + 5000 * agents_rescued && agents_rescued < 6) {
+  while(/*millis() - start_time < 60000 + 5000 * agents_rescued && */agents_rescued < 6) {
     LCD.clear(); LCD.home() ;
     LCD.setCursor(0, 0); LCD.print("Move");
     last_stop = millis();
@@ -113,13 +115,21 @@ void rescue() {
     agents_rescued++;
   }
 
-  while(agents_rescued % 7 != 2) {
-    last_stop = millis();
-    nextAgent();
-    agents_rescued++;
+  if (surface == 0) {
+    while(agents_rescued % 7 != 4) {
+      last_stop = millis();
+      nextAgent();
+      agents_rescued++;
+    }
+    rotate(180, -1);
+  } else {
+    while(agents_rescued % 7 != 3) {
+      last_stop = millis();
+      nextAgent();
+      agents_rescued++;
+    }
+    leap();
   }
-
-  leap();
   stopMotors();
 }
 

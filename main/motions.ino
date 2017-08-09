@@ -25,7 +25,7 @@ int read10kSensor() {
 }
 
 bool stopSignal() {
-  return (read1kSensor() >= 4 && read10kSensor() >= 4  && 2 * read1kSensor() < read10kSensor());
+  return (read1kSensor() >= 4 && read10kSensor() >= 4  && 3 * read1kSensor() < read10kSensor());
 }
 
 bool isOnIntersection() {
@@ -33,11 +33,7 @@ bool isOnIntersection() {
 }
 
 bool foundHoldingTank() {
-  if (surface == 0) {
-    return readFarRightSensor() > qrd_threshold && ((left_rotations + right_rotations) > 3 * gate_location[surface]);
-  } else {
-    return readFarLeftSensor() > qrd_threshold && ((left_rotations + right_rotations) > 3 * gate_location[surface]);
-  }
+  readFarLeftSensor() > qrd_threshold && ((left_rotations + right_rotations) > 3 * gate_location[surface]);
 }
 
 
@@ -130,12 +126,12 @@ void driveBackwards(unsigned long distance, int speed) {
   stopMotors();
 }
 
-// 1 is clockwise, false is counter-clockwise
+// 1 is clockwise, -1 is counter-clockwise
 int rotate(int angle, int dir) {
   left_rotations = 0;
   right_rotations = 0;
 
-  while (left_rotations + right_rotations < angle * 40) {
+  while (left_rotations + right_rotations < angle * 75) {
     moveLeftWheel(100 * dir);
     moveRightWheel(-100 * dir);
   }
