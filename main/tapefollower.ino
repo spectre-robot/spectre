@@ -35,14 +35,14 @@ void tapefollow() {
 
     unsigned long distance = left_rotations + right_rotations;
     
-   if (!seen_gate && distance > gate_location[surface]) {
+   /*if (!seen_gate && distance > gate_location[surface]) {
         stopMotors();
         seen_gate = true;
-        delay(1000);
+        delay(500);
         if (stopSignal()) {
           waitForGo();
         }
-    }
+    }*/
     
 
     /*if (!seen_gate && distance > 50000 && distance <= gate_location[surface]) {
@@ -54,12 +54,17 @@ void tapefollow() {
         seen_gate = true;
       }
     }*/
-    /*
-    if (foundHoldingTank()) {
+    
+   /* if (foundHoldingTank()) {
+      stopMotors();
+      break;
+    }*/
+
+    if (readFarLeftSensor() > qrd_threshold) {
       stopMotors();
       break;
     }
-   */ 
+    
   }
 }
 

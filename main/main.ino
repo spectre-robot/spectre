@@ -60,11 +60,11 @@ void loop() {
   right_rotations = 0;
   seen_gate = false;
   start_time = millis();
-  //tapefollow();
-  //delay(500);
-  //RCServo2.write(140);
-  //delay(500);
-  //rescue();
+  tapefollow();
+  delay(500);
+  RCServo2.write(140);
+  delay(500);
+  rescue();
   zipline();  
 }
 

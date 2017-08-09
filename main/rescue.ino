@@ -33,20 +33,20 @@ void leap() {
     d = kd * (error - prev_error);
 
     int control = gain * (p + d);
-    moveLeftWheel(43 + control);
-    moveRightWheel(43 - control);
+    moveLeftWheel(45 + control);
+    moveRightWheel(45 - control);
     prev_error = error;
   }
-
+  stopMotors();
   if (readRightSensor() < qrd_threshold && readLeftSensor() > qrd_threshold) {
     unsigned long start_spin = millis();
-    while (readRightSensor() < qrd_threshold && readLeftSensor() > qrd_threshold && (millis() - start_spin) < 600) {
+    while ((millis() - start_spin) < 600 && readRightSensor() < qrd_threshold && readLeftSensor() > qrd_threshold) {
       moveRightWheel(75);
       moveLeftWheel(-75);
     }
   } else {
     unsigned long start_spin = millis();
-    while (readLeftSensor() < qrd_threshold || readRightSensor() < qrd_threshold && (millis() - start_spin) < 750) {
+    while ((millis() - start_spin) < 750 && readLeftSensor() < qrd_threshold || readRightSensor() < qrd_threshold) {
       moveRightWheel(-75);
       moveLeftWheel(75);
     }
@@ -81,13 +81,22 @@ void nextAgent() {
     moveRightWheel(base_rescue_speed - control);
     prev_error = error;
   }
+  stopMotors();
 }
 
 void rescue() {
   if (surface == 0) {
     driveStraight(6000, 100);
     delay(100);
-    while(readLeftSensor() < qrd_threshold || readRightSensor() < qrd_threshold) {
+    while(readRightSensor() < qrd_threshold) {
+      moveRightWheel(100);
+      moveLeftWheel(-100);
+    }
+    stopMotors();
+    delay(100);
+  } else {
+    driveStraight(6000, 100);
+    while(readRightSensor() < qrd_threshold) {
       moveRightWheel(100);
       moveLeftWheel(-100);
     }
@@ -103,12 +112,11 @@ void rescue() {
     LCD.setCursor(0, 0); LCD.print("Move");
     last_stop = millis();
     nextAgent();
-    stopMotors();
     LCD.clear(); LCD.home() ;
     LCD.setCursor(0, 0); LCD.print("Leap");
+    LCD.setCursor(0, 1); LCD.print(readFarLeftSensor()); LCD.print(" "); LCD.print(readFarRightSensor());
     last_stop = millis();
     leap();
-    stopMotors();
     LCD.clear(); LCD.home() ;
     LCD.setCursor(0, 0); LCD.print("Grab");
     grabAgent();
@@ -118,6 +126,9 @@ void rescue() {
   if (surface == 0) {
     while(agents_rescued % 7 != 4) {
       last_stop = millis();
+      if (agents_rescued == 7) {
+        driveStraight(6000, 100);
+      }
       nextAgent();
       agents_rescued++;
     }
@@ -125,11 +136,15 @@ void rescue() {
   } else {
     while(agents_rescued % 7 != 3) {
       last_stop = millis();
+      if (agents_rescued == 7) {
+        driveStraight(6000, 100);
+      }
       nextAgent();
       agents_rescued++;
     }
     leap();
   }
   stopMotors();
+  RCServo0.write(135);
 }
 

@@ -33,7 +33,11 @@ bool isOnIntersection() {
 }
 
 bool foundHoldingTank() {
-  readFarLeftSensor() > qrd_threshold && ((left_rotations + right_rotations) > 3 * gate_location[surface]);
+  if (surface == 0) {
+    return (readFarRightSensor() > qrd_threshold) && ((left_rotations + right_rotations) > 3 * gate_location[surface]);
+  } else {
+    return (readFarLeftSensor() > qrd_threshold) && ((left_rotations + right_rotations) > 3 * gate_location[surface]);
+  }
 }
 
 
