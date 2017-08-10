@@ -12,8 +12,8 @@ void grabAgent() {
 
 void manual_grabAgent() {
   while (true) {
-     angle1 = knob(6)/5.6833;
-     angle2 = knob(7)/5.6833;
+     int angle1 = map(knob(6), 0, 1023, 0, 180);
+     int angle2 = map(knob(6), 0, 1023, 0, 180);
      
      RCServo0.write(angle1); //Shoulder Servo
      RCServo1.write(angle2); //Hand Servo
