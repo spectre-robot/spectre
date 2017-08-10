@@ -10,6 +10,19 @@ void grabAgent() {
   RCServo1.write(60); //Hand Servo
 }
 
+void manual_grabAgent() {
+  while (true) {
+     angle1 = knob(6)/5.6833;
+     angle2 = knob(7)/5.6833;
+     
+     RCServo0.write(angle1); //Shoulder Servo
+     RCServo1.write(angle2); //Hand Servo
+
+     LCD.clear(); LCD.home() ;
+     LCD.setCursor(0, 0); LCD.print(angle1); LCD.print(" "); LCD.print(angle2);
+  }
+ }
+
 void leap() {
   int p = 0, d = 0;
   int prev_error = 0, kp = 10, kd = 2;
