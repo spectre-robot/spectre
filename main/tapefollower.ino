@@ -35,32 +35,31 @@ void tapefollow() {
 
     unsigned long distance = left_rotations + right_rotations;
     
-   /*if (!seen_gate && distance > gate_location[surface]) {
+   if (!seen_gate && distance > gate_location[surface]) {
         stopMotors();
         seen_gate = true;
         delay(500);
         if (stopSignal()) {
           waitForGo();
         }
-    }*/
+    }
     
-
-    /*if (!seen_gate && distance > 50000 && distance <= gate_location[surface]) {
+/*
+    if (!seen_gate && distance > 50000 && distance <= gate_location[surface]) {
       delay(1000);
-      LCD.setCursor(0, 1); LCD.print("BAKA");
       if (stopSignal()) {
         stopMotors();
         waitForGo();
         seen_gate = true;
       }
-    }*/
-    
-   /* if (foundHoldingTank()) {
+    }
+    */
+    if (foundHoldingTank()) {
       stopMotors();
       break;
-    }*/
+    }
 
-    if (surface == 0) {
+    /*if (surface == 0) {
       if (readFarRightSensor() > qrd_threshold) {
         stopMotors();
         break;
@@ -70,7 +69,7 @@ void tapefollow() {
         stopMotors();
         break;
       }
-    }
+    }*/
   }
 }
 

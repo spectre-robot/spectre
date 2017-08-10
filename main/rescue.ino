@@ -88,12 +88,16 @@ void rescue() {
   if (surface == 0) {
     driveStraight(2000, 100);
     delay(1000);
+    LCD.clear(); LCD.home() ;
+    LCD.setCursor(0, 0); LCD.print("Turn");
     while(readRightSensor() < qrd_threshold) {
       moveRightWheel(75);
       moveLeftWheel(-75);
     }
     stopMotors();
     delay(1000);
+    LCD.clear(); LCD.home() ;
+    LCD.setCursor(0, 0); LCD.print("Back");
     driveBackwards(1000, -100);
     stopMotors();
     delay(1000);
