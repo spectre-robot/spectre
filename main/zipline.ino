@@ -46,7 +46,7 @@ void findZipline() {
 }
 
 void makeMyDreamsComeTrue() {
-  motor.speed(3, 255);
+  motor.speed(2, 255);
 }
 
 void zipline() {
@@ -59,11 +59,11 @@ void zipline() {
   }
   LCD.clear(); LCD.home() ;
   LCD.setCursor(0, 0); LCD.print("SAFE!!!!!");
-  motor.speed(3, 0);
-  while(!stopbutton()) {
+  motor.speed(2, 0);
+  while(!startbutton()) {
     delay(10);
   }
   LCD.clear(); LCD.home() ;
   LCD.setCursor(0, 0); LCD.print("unwind");
-  motor.speed(3, -255);
+  motor.speed(2, -255);
 }

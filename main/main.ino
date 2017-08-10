@@ -57,7 +57,7 @@ void loop() {
   RCServo1.write(60);
   RCServo2.write(180);
   menu();
-  /*left_rotations = 0;
+  left_rotations = 0;
   right_rotations = 0;
   seen_gate = false;
   start_time = millis();
@@ -65,8 +65,8 @@ void loop() {
   delay(500);
   RCServo2.write(140);
   delay(500);
-  rescue();*/
-  zipline();
+  rescue();
+  //zipline();
 }
 
 

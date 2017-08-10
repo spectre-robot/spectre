@@ -135,7 +135,7 @@ int rotate(int angle, int dir) {
   left_rotations = 0;
   right_rotations = 0;
 
-  while (left_rotations + right_rotations < angle * 75) {
+  while (left_rotations + right_rotations < angle * 85) {
     moveLeftWheel(100 * dir);
     moveRightWheel(-100 * dir);
   }

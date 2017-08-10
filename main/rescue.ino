@@ -59,7 +59,7 @@ void nextAgent() {
   int prev_error = 0, kp = 18, kd = 9;
   int gain = 1;
 
-  while (!isOnIntersection() || ((millis() - last_stop) < 500 && agents_rescued != 0)) {
+  while (!isOnIntersection() || (agents_rescued != 0 && (millis() - last_stop) < 500) || (agents_rescued == 0 && (millis() - last_stop) < 200)) {
     int left = readLeftSensor();
     int right = readRightSensor();
     int error;
@@ -105,9 +105,9 @@ void rescue() {
       moveLeftWheel(-75);
     }
     stopMotors();
-    delay(100);
-    driveBackwards(1000, -100);
-    stopMotors();
+    //delay(100);
+    //driveBackwards(1000, -100);
+    //stopMotors();
     delay(100);
   }
 
@@ -130,7 +130,7 @@ void rescue() {
   }
 
   if (surface == 0) {
-    while(agents_rescued != 11) {
+    while(agents_rescued != 10) {
       last_stop = millis();
       /*if (agents_rescued == 7) {
         driveStraight(6000, 100);
