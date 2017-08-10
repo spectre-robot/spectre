@@ -42,6 +42,11 @@ void tapefollow() {
         if (stopSignal()) {
           waitForGo();
         }
+        if (surface == 0) {
+          base_tapefollow_speed = 150;
+          kp = 13;
+          kd = 4;
+        }
     }
     
 /*

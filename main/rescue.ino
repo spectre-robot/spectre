@@ -86,18 +86,14 @@ void nextAgent() {
 void rescue() {
   agents_rescued = 0;
   if (surface == 0) {
-    driveStraight(2000, 100);
+    driveStraight(1500, 100);
     delay(1000);
-    LCD.clear(); LCD.home() ;
-    LCD.setCursor(0, 0); LCD.print("Turn");
     while(readRightSensor() < qrd_threshold) {
       moveRightWheel(75);
       moveLeftWheel(-75);
     }
     stopMotors();
     delay(1000);
-    LCD.clear(); LCD.home() ;
-    LCD.setCursor(0, 0); LCD.print("Back");
     driveBackwards(1000, -100);
     stopMotors();
     delay(1000);
@@ -109,9 +105,9 @@ void rescue() {
       moveLeftWheel(-75);
     }
     stopMotors();
-    //delay(100);
-    //driveBackwards(1000, -100);
-    //stopMotors();
+    delay(100);
+    driveBackwards(300, -100);
+    stopMotors();
     delay(100);
   }
 
@@ -121,11 +117,31 @@ void rescue() {
     LCD.setCursor(0, 0); LCD.print("Move");
     last_stop = millis();
     nextAgent();
-    LCD.clear(); LCD.home() ;
-    LCD.setCursor(0, 0); LCD.print("Leap");
-    LCD.setCursor(0, 1); LCD.print(readFarLeftSensor()); LCD.print(" "); LCD.print(readFarRightSensor());
-    last_stop = millis();
-    leap();
+    if(agents_rescued == 0) {
+      RCServo2.write(100);
+      delay(1000);
+      driveStraight(2000, 100);
+      if (readRightSensor() < qrd_threshold && readLeftSensor() < qrd_threshold) {
+        unsigned long s_t = millis();
+        while(millis() - s_t < 500 && readRightSensor() < qrd_threshold) {
+          moveRightWheel(50);
+          moveLeftWheel(-50);
+        }
+        if (readRightSensor() < qrd_threshold && readLeftSensor() < qrd_threshold) {
+          unsigned long s_t = millis();
+          while(millis() - s_t < 400 && readRightSensor() < qrd_threshold) {
+            moveLeftWheel(50);
+            moveRightWheel(-50);
+          }
+        }
+      }
+    } else {
+      LCD.clear(); LCD.home() ;
+      LCD.setCursor(0, 0); LCD.print("Leap");
+      LCD.setCursor(0, 1); LCD.print(readFarLeftSensor()); LCD.print(" "); LCD.print(readFarRightSensor());
+      last_stop = millis();
+      leap();
+    }
     LCD.clear(); LCD.home() ;
     LCD.setCursor(0, 0); LCD.print("Grab");
     LCD.setCursor(0, 1); LCD.print(agents_rescued);

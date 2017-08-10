@@ -62,11 +62,8 @@ void loop() {
   seen_gate = false;
   start_time = millis();
   tapefollow();
-  delay(500);
-  RCServo2.write(140);
-  delay(500);
   rescue();
-  //zipline();
+  zipline();
 }
 
 
