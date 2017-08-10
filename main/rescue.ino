@@ -13,13 +13,14 @@ void grabAgent() {
 void manual_grabAgent() {
   while (true) {
      int angle1 = map(knob(6), 0, 1023, 0, 180);
-     int angle2 = map(knob(6), 0, 1023, 0, 180);
+     int angle2 = map(knob(7), 0, 1023, 0, 180);
      
      RCServo0.write(angle1); //Shoulder Servo
      RCServo1.write(angle2); //Hand Servo
 
      LCD.clear(); LCD.home() ;
      LCD.setCursor(0, 0); LCD.print(angle1); LCD.print(" "); LCD.print(angle2);
+     delay(500);
   }
  }
 
