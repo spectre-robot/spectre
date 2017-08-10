@@ -5,7 +5,7 @@
 // GLOBAL VARIABLES
 int surface = 0; // 0 for clockwise surface, 1 for counter-clockwise
 bool seen_gate = false; // sorry
-int qrd_threshold = 100;
+int qrd_threshold = 500;
 int ir_threshold = 75;
 int base_tapefollow_speed = 125; // fyi the motor takes in values from -255 to 255. so dont make this too high!
 int base_rescue_speed = 100;
