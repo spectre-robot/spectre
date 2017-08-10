@@ -60,11 +60,17 @@ void tapefollow() {
       break;
     }*/
 
-    if (readFarLeftSensor() > qrd_threshold) {
-      stopMotors();
-      break;
+    if (surface == 0) {
+      if (readFarRightSensor() > qrd_threshold) {
+        stopMotors();
+        break;
+      }
+    } else {
+      if (readFarLeftSensor() > qrd_threshold) {
+        stopMotors();
+        break;
+      }
     }
-    
   }
 }
 

@@ -10,6 +10,7 @@ int ir_threshold = 75;
 int base_tapefollow_speed = 125; // fyi the motor takes in values from -255 to 255. so dont make this too high!
 int base_rescue_speed = 100;
 unsigned long start_time = 0;
+int agents_rescued = 0;
 
 // MAP
 unsigned long gate_location[2] = {110000, 110000};
@@ -56,7 +57,7 @@ void loop() {
   RCServo1.write(60);
   RCServo2.write(180);
   menu();
-  left_rotations = 0;
+  /*left_rotations = 0;
   right_rotations = 0;
   seen_gate = false;
   start_time = millis();
@@ -64,8 +65,8 @@ void loop() {
   delay(500);
   RCServo2.write(140);
   delay(500);
-  rescue();
-  zipline();  
+  rescue();*/
+  zipline();
 }
 
 

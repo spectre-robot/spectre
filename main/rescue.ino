@@ -15,7 +15,6 @@ void leap() {
   int prev_error = 0, kp = 10, kd = 2;
   int gain = 1;
 
-  // tapefollow until intersection or if it had just stopped.
   while((millis() - last_stop) < 120) {
     int left = readLeftSensor();
     int right = readRightSensor();
@@ -60,7 +59,7 @@ void nextAgent() {
   int prev_error = 0, kp = 18, kd = 9;
   int gain = 1;
 
-  while(!isOnIntersection() || (millis() - last_stop) < 200) {
+  while (!isOnIntersection() || ((millis() - last_stop) < 500 && agents_rescued != 0)) {
     int left = readLeftSensor();
     int right = readRightSensor();
     int error;
@@ -85,29 +84,35 @@ void nextAgent() {
 }
 
 void rescue() {
+  agents_rescued = 0;
   if (surface == 0) {
-    driveStraight(6000, 100);
+    driveStraight(2000, 100);
+    delay(1000);
+    while(readRightSensor() < qrd_threshold) {
+      moveRightWheel(75);
+      moveLeftWheel(-75);
+    }
+    stopMotors();
+    delay(1000);
+    driveBackwards(1000, -100);
+    stopMotors();
+    delay(1000);
+  } else {
+    driveStraight(3000, 100);
     delay(100);
     while(readRightSensor() < qrd_threshold) {
-      moveRightWheel(100);
-      moveLeftWheel(-100);
+      moveRightWheel(75);
+      moveLeftWheel(-75);
     }
     stopMotors();
     delay(100);
-  } else {
-    driveStraight(6000, 100);
-    while(readRightSensor() < qrd_threshold) {
-      moveRightWheel(100);
-      moveLeftWheel(-100);
-    }
+    driveBackwards(1000, -100);
     stopMotors();
     delay(100);
   }
-  
-  int agents_rescued = 0;
 
   // save agents until we've saved them all or the rest already drowned
-  while(/*millis() - start_time < 60000 + 5000 * agents_rescued && */agents_rescued < 6) {
+  while(agents_rescued < 6) {
     LCD.clear(); LCD.home() ;
     LCD.setCursor(0, 0); LCD.print("Move");
     last_stop = millis();
@@ -119,27 +124,35 @@ void rescue() {
     leap();
     LCD.clear(); LCD.home() ;
     LCD.setCursor(0, 0); LCD.print("Grab");
+    LCD.setCursor(0, 1); LCD.print(agents_rescued);
     grabAgent();
     agents_rescued++;
   }
 
   if (surface == 0) {
-    while(agents_rescued % 7 != 4) {
+    while(agents_rescued != 11) {
       last_stop = millis();
-      if (agents_rescued == 7) {
+      /*if (agents_rescued == 7) {
         driveStraight(6000, 100);
-      }
+      }*/
       nextAgent();
+      LCD.clear(); LCD.home() ;
+      LCD.setCursor(0, 0); LCD.print(agents_rescued);
+      delay(1000);
       agents_rescued++;
     }
     rotate(180, -1);
+    delay(1000);
   } else {
-    while(agents_rescued % 7 != 3) {
+    while(agents_rescued != 10) {
       last_stop = millis();
-      if (agents_rescued == 7) {
+      /*if (agents_rescued == 7) {
         driveStraight(6000, 100);
-      }
+      }*/
       nextAgent();
+      LCD.clear(); LCD.home() ;
+      LCD.setCursor(0, 0); LCD.print(agents_rescued);
+      delay(1000);
       agents_rescued++;
     }
     leap();
